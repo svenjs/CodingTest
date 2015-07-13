@@ -18,7 +18,8 @@
 
 @implementation wpweatherTests
 
-- (void)setUp {
+- (void) setUp
+{
     [super setUp];
   
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
@@ -28,18 +29,21 @@
     // Put setup code here. This method is called before the invocation of each test method in the class.
 }
 
-- (void)tearDown {
+- (void) tearDown
+{
     // Put teardown code here. This method is called after the invocation of each test method in the class.
     self.vc = nil;
     [super tearDown];
 }
 
-- (void)testExample {
+- (void) testExample
+{
     // This is an example of a functional test case.
     XCTAssert(YES, @"Pass");
 }
 
-- (void)testPerformanceExample {
+- (void) testPerformanceExample
+{
     // This is an example of a performance test case.
     [self measureBlock:^{
         // Put the code you want to measure the time of here.
@@ -47,12 +51,12 @@
 }
 
 #pragma mark - View loading tests
--(void)testThatViewLoads
+- (void) testThatViewLoads
 {
   XCTAssertNotNil(self.vc.view, @"View not initiated properly");
 }
 
-- (void)testWeatherReportHasAllUIElements
+- (void) testWeatherReportHasAllUIElements
 {
   NSArray *subviews = self.vc.view.subviews;
   XCTAssertTrue([subviews containsObject:self.vc.lblWeatherSummary], @"View does not have summary label");
@@ -63,7 +67,7 @@
   XCTAssertTrue([subviews containsObject:self.vc.btnRefresh], @"View does not have refresh button");
 }
 
--(void)testWeatherReportUIElementsDidLoad
+- (void) testWeatherReportUIElementsDidLoad
 {
   XCTAssertNotNil(self.vc.btnRefresh, @"Refresh button not initiated");
   XCTAssertNotNil(self.vc.lblWeatherSummary, @"Weather Summary label not initiated");
@@ -72,7 +76,7 @@
   XCTAssertNotNil(self.vc.aivSpinner, @"Spinner not initiated");
 }
 
--(void) testStartWaiting
+- (void) testStartWaiting
 {
   [self.vc performSelectorOnMainThread:@selector(startWaiting) withObject:nil waitUntilDone:YES];
   XCTAssertTrue(self.vc.aivSpinner.isAnimating);
@@ -82,7 +86,7 @@
   XCTAssertEqualObjects(self.vc.lblWeatherSummary.text, @"--loading--");
 }
 
--(void) finishWithDummyData:(NSArray*) parameters
+- (void) finishWithDummyData:(NSArray*) parameters
 {
   if (parameters.count != 2)
   {
@@ -92,7 +96,7 @@
   [self.vc stopWaitingWithSummary:[parameters objectAtIndex:0] andlocation:[parameters objectAtIndex:1]];
 }
 
--(void) testStopWaitingWithDummyResult
+- (void) testStopWaitingWithDummyResult
 {
   NSString* dummySummary = [Util randomStringWithLength:10];
   NSString* dummyLocation = [Util randomStringWithLength:10];
@@ -117,7 +121,7 @@
 }
 
 // utilities
--(void) testStringForURL
+- (void) testStringForURL
 {
   NSString* nonNilResult = [Util stringFromURL:[NSURL URLWithString:@"http://www.google.com"]];
   XCTAssertNotNil(nonNilResult);
@@ -127,7 +131,7 @@
   XCTAssertNil([Util stringFromURL:[NSURL URLWithString:@"https://css-tricks.com/thispagedoesntexist"]]);
 }
 
--(void) testDictForJSONString
+- (void) testDictForJSONString
 {
   NSString* validJSON = @"{\"TEST\":123, \"TEST2\":\"SOMESTRING\"}";
   NSString* nilJSON = @"{}";
@@ -147,7 +151,7 @@
 
 // Weather-reporter
 
--(void) checkWeatherAtLocation:(CLLocation*) thisLocation expectTimezone:(NSString*) timeZone
+- (void) checkWeatherAtLocation:(CLLocation*) thisLocation expectTimezone:(NSString*) timeZone
 {
   XCTAssertNotNil(thisLocation);
   NSDictionary* result = [WeatherReport getWeatherSummaryForLocation:thisLocation];

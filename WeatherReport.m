@@ -13,7 +13,7 @@
 
 @implementation WeatherReport
 
-+(NSURL*) getURLForLocation:(CLLocation*) thisLocation
++ (NSURL*) getURLForLocation:(CLLocation*) thisLocation
 {
   return [NSURL URLWithString:
           [NSString stringWithFormat:@"https://api.forecast.io/forecast/%@/%.6f,%.6f",
@@ -21,7 +21,7 @@
 }
 
 // Return Location and Summary from Dictionary returns
-+(NSDictionary*) getWeatherSummaryForLocation:(CLLocation*) thisLocation
++ (NSDictionary*) getWeatherSummaryForLocation:(CLLocation*) thisLocation
 {
   if (thisLocation == nil)
   {

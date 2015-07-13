@@ -11,7 +11,7 @@
 
 @interface WeatherReport : NSObject
 
-+(NSURL*) getURLForLocation:(CLLocation*) thisLocation;
-+(NSDictionary*) getWeatherSummaryForLocation:(CLLocation*) thisLocation;
++ (NSURL*) getURLForLocation:(CLLocation*) thisLocation;
++ (NSDictionary*) getWeatherSummaryForLocation:(CLLocation*) thisLocation;
 
 @end

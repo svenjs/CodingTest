@@ -10,7 +10,7 @@
 
 @implementation Util
 
-+ (BOOL)isThisDateBeforeNow:(NSDate *)thisDate
++ (BOOL) isThisDateBeforeNow:(NSDate*) thisDate
 {
   NSDate* enddate = thisDate;
   NSDate* currentdate = [NSDate date];
@@ -26,7 +26,7 @@
     return NO;
 }
 
-+(NSString *) randomStringWithLength:(int) len
++ (NSString*) randomStringWithLength:(int) len
 {
   NSString *randomString = @"";
   for (int x=0; x < len; x++)
@@ -36,7 +36,7 @@
   return randomString;
 }
 
-+(NSDictionary*) dictFromJSONString:(NSString*) jsonString
++ (NSDictionary*) dictFromJSONString:(NSString*) jsonString
 {
   NSDictionary* json = nil;
   @try
@@ -82,8 +82,8 @@
   return responseString;
 }
 
-+(void) runInBG:(void (^)()) bgBlock
-    thenRunInFG:(void (^)()) fgBlock
++ (void) runInBG:(void (^)()) bgBlock
+     thenRunInFG:(void (^)()) fgBlock
 {
   dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
     bgBlock();

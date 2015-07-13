@@ -14,6 +14,8 @@
 		9217083A1B535BAC0007406D /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 921708391B535BAC0007406D /* Images.xcassets */; };
 		9217083D1B535BAC0007406D /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9217083B1B535BAC0007406D /* LaunchScreen.xib */; };
 		921708491B535BAC0007406D /* wpweatherTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 921708481B535BAC0007406D /* wpweatherTests.m */; };
+		921708541B536C1E0007406D /* Util.m in Sources */ = {isa = PBXBuildFile; fileRef = 921708531B536C1E0007406D /* Util.m */; };
+		921708551B536C230007406D /* Util.m in Sources */ = {isa = PBXBuildFile; fileRef = 921708531B536C1E0007406D /* Util.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -40,6 +42,8 @@
 		921708421B535BAC0007406D /* wpweatherTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = wpweatherTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		921708471B535BAC0007406D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		921708481B535BAC0007406D /* wpweatherTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = wpweatherTests.m; sourceTree = "<group>"; };
+		921708521B536C1E0007406D /* Util.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Util.h; sourceTree = "<group>"; };
+		921708531B536C1E0007406D /* Util.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Util.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -63,6 +67,8 @@
 		921708201B535BAB0007406D = {
 			isa = PBXGroup;
 			children = (
+				921708521B536C1E0007406D /* Util.h */,
+				921708531B536C1E0007406D /* Util.m */,
 				9217082B1B535BAC0007406D /* wpweather */,
 				921708451B535BAC0007406D /* wpweatherTests */,
 				9217082A1B535BAC0007406D /* Products */,
@@ -222,6 +228,7 @@
 				921708351B535BAC0007406D /* ViewController.m in Sources */,
 				921708321B535BAC0007406D /* AppDelegate.m in Sources */,
 				9217082F1B535BAC0007406D /* main.m in Sources */,
+				921708541B536C1E0007406D /* Util.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -230,6 +237,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				921708491B535BAC0007406D /* wpweatherTests.m in Sources */,
+				921708551B536C230007406D /* Util.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

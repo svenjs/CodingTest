@@ -115,4 +115,33 @@
   XCTAssertTrue([Util isThisDateBeforeNow:lastTimeCheckDate]);
 }
 
+// utilities
+-(void) testStringForURL
+{
+  NSString* nonNilResult = [Util stringFromURL:[NSURL URLWithString:@"http://www.google.com"]];
+  XCTAssertNotNil(nonNilResult);
+  XCTAssertTrue([nonNilResult respondsToSelector:@selector(substringFromIndex:)]);
+  XCTAssertTrue([nonNilResult respondsToSelector:@selector(length)]);
+  XCTAssertGreaterThan(nonNilResult.length, 0);
+  XCTAssertNil([Util stringFromURL:[NSURL URLWithString:@"https://css-tricks.com/thispagedoesntexist"]]);
+}
+
+-(void) testDictForJSONString
+{
+  NSString* validJSON = @"{\"TEST\":123, \"TEST2\":\"SOMESTRING\"}";
+  NSString* nilJSON = @"{}";
+  NSString* brokenJSON = @"{\"TEST\":";
+  NSString* brokenJSON2 = @"{\"TEST\":123,@\"TEST2";
+
+  NSDictionary* validJSONDict = [Util dictFromJSONString:validJSON];
+
+  XCTAssertNotNil(validJSONDict);
+  XCTAssertEqualObjects([validJSONDict objectForKey:@"TEST"], @123);
+  XCTAssertEqualObjects([validJSONDict objectForKey:@"TEST2"], @"SOMESTRING");
+  XCTAssertNotNil([Util dictFromJSONString:nilJSON]);
+  XCTAssertNil([Util dictFromJSONString:brokenJSON]);
+  XCTAssertNil([Util dictFromJSONString:brokenJSON2]);
+  XCTAssertNil([Util dictFromJSONString:nil]);
+}
+
 @end

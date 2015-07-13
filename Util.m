@@ -36,4 +36,50 @@
   return randomString;
 }
 
++(NSDictionary*) dictFromJSONString:(NSString*) jsonString
+{
+  NSDictionary* json = nil;
+  @try
+  {
+    NSError *jsonError;
+    NSData *objectData = [jsonString dataUsingEncoding:NSUTF8StringEncoding];
+    json = [NSJSONSerialization JSONObjectWithData:objectData
+                                           options:NSJSONReadingMutableContainers
+                                             error:&jsonError];
+  }
+  @catch (NSException *exception)
+  {
+    NSLog(@"CAUGHT EXCEPTION: JSON: %@", [exception description]);
+  }
+  return json;
+}
+
++ (NSString*) stringFromURL:(NSURL*) url
+{
+  NSURLRequest* request = [NSURLRequest requestWithURL:url];
+
+  NSURLResponse *response;
+  NSError *error;
+  NSData *responseData = [NSURLConnection sendSynchronousRequest:request returningResponse:&response error:&error];
+  NSString *responseString = [[NSString alloc] initWithData:responseData encoding:NSUTF8StringEncoding];
+
+  if(error)
+  {
+    NSLog(@"Error retrieving data: %@", [error localizedDescription]);
+    return nil;
+  }
+
+  NSHTTPURLResponse *httpResponse = (NSHTTPURLResponse *) response;
+
+  if (httpResponse && [httpResponse respondsToSelector:@selector(statusCode)])
+  {
+    if (httpResponse.statusCode != 200)
+    {
+      return nil;
+    }
+  }
+
+  return responseString;
+}
+
 @end

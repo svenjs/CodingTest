@@ -12,5 +12,6 @@
 
 + (BOOL)isThisDateBeforeNow:(NSDate *)thisDate;
 + (NSString *) randomStringWithLength: (int) len;
-
++ (NSString*) stringFromURL:(NSURL*) thisUrlString;
++ (NSDictionary*) dictFromJSONString:(NSString*) jsonString;
 @end

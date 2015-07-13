@@ -9,6 +9,7 @@
 #import <UIKit/UIKit.h>
 #import <XCTest/XCTest.h>
 #import "ViewController.h"
+#import "Util.h"
 
 @interface wpweatherTests : XCTestCase
 @property (nonatomic, strong) ViewController *vc;
@@ -68,6 +69,50 @@
   XCTAssertNotNil(self.vc.lblLastTimeChecked, @"Last-time label not initiated");
   XCTAssertNotNil(self.vc.lblLocation, @"Location label not initiated");
   XCTAssertNotNil(self.vc.aivSpinner, @"Spinner not initiated");
+}
+
+-(void) testStartWaiting
+{
+  [self.vc performSelectorOnMainThread:@selector(startWaiting) withObject:nil waitUntilDone:YES];
+  XCTAssertTrue(self.vc.aivSpinner.isAnimating);
+  XCTAssertFalse(self.vc.btnRefresh.enabled);
+  XCTAssertEqualObjects(self.vc.lblLastTimeChecked.text, @"--loading--");
+  XCTAssertEqualObjects(self.vc.lblLocation.text, @"--loading--");
+  XCTAssertEqualObjects(self.vc.lblWeatherSummary.text, @"--loading--");
+}
+
+-(void) finishWithDummyData:(NSArray*) parameters
+{
+  if (parameters.count != 2)
+  {
+    XCTFail(@"Two Parameters expected");
+    return;
+  }
+  [self.vc stopWaitingWithSummary:[parameters objectAtIndex:0] andlocation:[parameters objectAtIndex:1]];
+}
+
+-(void) testStopWaitingWithDummyResult
+{
+  NSString* dummySummary = [Util randomStringWithLength:10];
+  NSString* dummyLocation = [Util randomStringWithLength:10];
+
+  [self performSelectorOnMainThread:@selector(finishWithDummyData:)
+                         withObject:@[dummySummary, dummyLocation]
+                      waitUntilDone:YES];
+
+  XCTAssertFalse(self.vc.aivSpinner.isAnimating);
+  XCTAssertTrue(self.vc.btnRefresh.enabled);
+  XCTAssertEqualObjects(self.vc.lblWeatherSummary.text, dummySummary);
+  XCTAssertEqualObjects(self.vc.lblLocation.text, dummyLocation);
+
+  // test if last-checked contains a valid date string
+  NSDateFormatter *dateFormatter = [[NSDateFormatter alloc]init];
+  [dateFormatter setDateFormat:@"dd.MM.YY HH:mm:ss"];
+  NSDate* lastTimeCheckDate = [dateFormatter dateFromString:self.vc.lblLastTimeChecked.text];
+  XCTAssertNotNil(lastTimeCheckDate);
+
+  // should be in the past and a valid date
+  XCTAssertTrue([Util isThisDateBeforeNow:lastTimeCheckDate]);
 }
 
 @end

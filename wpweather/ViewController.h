@@ -16,5 +16,9 @@
 @property (nonatomic, assign) IBOutlet UIActivityIndicatorView *aivSpinner;
 @property (nonatomic, assign) IBOutlet UIButton *btnRefresh;
 
+- (void) startWaiting;
+- (void) stopWaitingWithSummary:(NSString*) summaryString
+                    andlocation:(NSString*) locationString;
+
 @end
 

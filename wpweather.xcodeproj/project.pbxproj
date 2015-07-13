@@ -18,6 +18,8 @@
 		921708551B536C230007406D /* Util.m in Sources */ = {isa = PBXBuildFile; fileRef = 921708531B536C1E0007406D /* Util.m */; };
 		9217085E1B5396CD0007406D /* WeatherReport.m in Sources */ = {isa = PBXBuildFile; fileRef = 9217085D1B5396CD0007406D /* WeatherReport.m */; };
 		9217085F1B5396CD0007406D /* WeatherReport.m in Sources */ = {isa = PBXBuildFile; fileRef = 9217085D1B5396CD0007406D /* WeatherReport.m */; };
+		921708621B53F0A60007406D /* LocationFetcher.m in Sources */ = {isa = PBXBuildFile; fileRef = 921708611B53F0A60007406D /* LocationFetcher.m */; };
+		921708631B53F0A60007406D /* LocationFetcher.m in Sources */ = {isa = PBXBuildFile; fileRef = 921708611B53F0A60007406D /* LocationFetcher.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -48,6 +50,8 @@
 		921708531B536C1E0007406D /* Util.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Util.m; sourceTree = "<group>"; };
 		9217085C1B5396CD0007406D /* WeatherReport.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WeatherReport.h; sourceTree = "<group>"; };
 		9217085D1B5396CD0007406D /* WeatherReport.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WeatherReport.m; sourceTree = "<group>"; };
+		921708601B53F0A60007406D /* LocationFetcher.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LocationFetcher.h; sourceTree = "<group>"; };
+		921708611B53F0A60007406D /* LocationFetcher.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LocationFetcher.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -71,6 +75,8 @@
 		921708201B535BAB0007406D = {
 			isa = PBXGroup;
 			children = (
+				921708601B53F0A60007406D /* LocationFetcher.h */,
+				921708611B53F0A60007406D /* LocationFetcher.m */,
 				921708521B536C1E0007406D /* Util.h */,
 				921708531B536C1E0007406D /* Util.m */,
 				9217085C1B5396CD0007406D /* WeatherReport.h */,
@@ -235,6 +241,7 @@
 				9217085E1B5396CD0007406D /* WeatherReport.m in Sources */,
 				921708321B535BAC0007406D /* AppDelegate.m in Sources */,
 				9217082F1B535BAC0007406D /* main.m in Sources */,
+				921708621B53F0A60007406D /* LocationFetcher.m in Sources */,
 				921708541B536C1E0007406D /* Util.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -245,6 +252,7 @@
 			files = (
 				921708491B535BAC0007406D /* wpweatherTests.m in Sources */,
 				9217085F1B5396CD0007406D /* WeatherReport.m in Sources */,
+				921708631B53F0A60007406D /* LocationFetcher.m in Sources */,
 				921708551B536C230007406D /* Util.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

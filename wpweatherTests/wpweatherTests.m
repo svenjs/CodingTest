@@ -11,6 +11,7 @@
 #import "ViewController.h"
 #import "Util.h"
 #import "WeatherReport.h"
+#import "LocationFetcher.h"
 
 @interface wpweatherTests : XCTestCase
 @property (nonatomic, strong) ViewController *vc;
@@ -242,6 +243,55 @@
   [self checkWeatherReportInVCWithLocationAndExpectedTimezone:@[@"center",@"Etc/GMT"]];
   [self checkWeatherReportInVCWithLocationAndExpectedTimezone:@[@"invalid",@"Error"]];
   [self checkWeatherReportInVCWithLocationAndExpectedTimezone:@[[NSNull null],@"Error"]];
+}
+
+// Locationfetcher - TestMode
+- (void) checkLocationFetcherWithTestLocationNamed:(NSString*) testLocationName andError:(NSError*) testError
+{
+  XCTestExpectation *expectation = [self expectationWithDescription:@"Return of location-lookup"];
+
+  CLLocation* testLoc = [self testLocationWithName:testLocationName];
+
+  LocationFetcher* lf = [[LocationFetcher alloc] initWithSuccessBlock:^(CLLocation* myLoc)
+                         {
+                           NSLog(@"Success with: %@", myLoc);
+                           XCTAssertNotNil(myLoc);
+                           XCTAssertEqualObjects(myLoc, testLoc);
+                           [expectation fulfill];
+
+                         } andFailBlock:^(NSError* error)
+                         {
+                           NSLog(@"Failure with: %@", [error localizedDescription]);
+                           XCTAssertNotNil(error);
+                           XCTAssertEqualObjects(error, testError);
+                           [expectation fulfill];
+                         }];
+
+  XCTAssertNotNil(lf);
+
+  lf.testLookupDelay = 0;
+  lf.testOverrideError = testError;
+  lf.testOverrideLocation = testLoc;
+
+  [lf startLookup];
+
+  [self waitForExpectationsWithTimeout:10.0 handler:^(NSError *error)
+  {
+    if (error)
+    {
+      NSLog(@"Timeout Error: %@", error);
+    }
+  }];
+}
+
+- (void) testLocationFetcher
+{
+  [self checkLocationFetcherWithTestLocationNamed:@"sydney" andError:nil];
+  [self checkLocationFetcherWithTestLocationNamed:@"perth" andError:nil];
+  [self checkLocationFetcherWithTestLocationNamed:@"darwin" andError:nil];
+  [self checkLocationFetcherWithTestLocationNamed:@"center" andError:nil];
+  [self checkLocationFetcherWithTestLocationNamed:@"invalid" andError:nil];
+  [self checkLocationFetcherWithTestLocationNamed:@"center" andError:[NSError errorWithDomain:@"Test" code:200 userInfo:nil]];
 }
 
 @end

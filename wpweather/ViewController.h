@@ -10,6 +10,11 @@
 
 @interface ViewController : UIViewController
 
+@property (nonatomic, assign) IBOutlet UILabel *lblWeatherSummary;
+@property (nonatomic, assign) IBOutlet UILabel *lblLocation;
+@property (nonatomic, assign) IBOutlet UILabel *lblLastTimeChecked;
+@property (nonatomic, assign) IBOutlet UIActivityIndicatorView *aivSpinner;
+@property (nonatomic, assign) IBOutlet UIButton *btnRefresh;
 
 @end
 

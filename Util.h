@@ -14,4 +14,6 @@
 + (NSString *) randomStringWithLength: (int) len;
 + (NSString*) stringFromURL:(NSURL*) thisUrlString;
 + (NSDictionary*) dictFromJSONString:(NSString*) jsonString;
++ (void) runInBG:(void (^)()) bgBlock
+     thenRunInFG:(void (^)()) fgBlock;
 @end

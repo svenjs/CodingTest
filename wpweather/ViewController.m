@@ -63,8 +63,12 @@
 {
   [self startWaiting];
 
-  __block NSString* location;
-  __block NSString* summary;
+  __block NSString* location = @"Error";
+  __block NSString* summary = @"Error";
+
+  // if anything goes wrong while retrieving the weather
+  // result will come back with nil, and location and summary
+  // will both remain with value "Error"
 
   [Util runInBG:^()
   {
@@ -76,12 +80,9 @@
     }
   } thenRunInFG:^()
   {
-    if (location && summary)
-    {
-      [self stopWaitingWithSummary:summary andlocation:location];
-      if (returnBlock)
-        returnBlock();
-    }
+    [self stopWaitingWithSummary:summary andlocation:location];
+    if (returnBlock)
+      returnBlock();
   }];
 }
 

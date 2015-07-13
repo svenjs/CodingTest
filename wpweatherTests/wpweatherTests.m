@@ -171,7 +171,8 @@
     @"canberra":[[CLLocation alloc] initWithLatitude:-35.3075 longitude:149.124417],
     @"darwin":[[CLLocation alloc] initWithLatitude:-12.45 longitude:130.833333],
     @"perth":[[CLLocation alloc] initWithLatitude:-31.952222 longitude:115.858889],
-    @"center":[[CLLocation alloc] initWithLatitude:0 longitude:0]};
+    @"center":[[CLLocation alloc] initWithLatitude:0 longitude:0],
+    @"invalid":[[CLLocation alloc] initWithLatitude:999 longitude:999]};
 
   return [locs objectForKey:name];
 }
@@ -239,6 +240,8 @@
   [self checkWeatherReportInVCWithLocationAndExpectedTimezone:@[@"perth",@"Australia/Perth"]];
   [self checkWeatherReportInVCWithLocationAndExpectedTimezone:@[@"darwin",@"Australia/Darwin"]];
   [self checkWeatherReportInVCWithLocationAndExpectedTimezone:@[@"center",@"Etc/GMT"]];
+  [self checkWeatherReportInVCWithLocationAndExpectedTimezone:@[@"invalid",@"Error"]];
+  [self checkWeatherReportInVCWithLocationAndExpectedTimezone:@[[NSNull null],@"Error"]];
 }
 
 @end

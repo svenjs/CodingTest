@@ -10,6 +10,7 @@
 #import <XCTest/XCTest.h>
 #import "ViewController.h"
 #import "Util.h"
+#import "WeatherReport.h"
 
 @interface wpweatherTests : XCTestCase
 @property (nonatomic, strong) ViewController *vc;
@@ -142,6 +143,40 @@
   XCTAssertNil([Util dictFromJSONString:brokenJSON]);
   XCTAssertNil([Util dictFromJSONString:brokenJSON2]);
   XCTAssertNil([Util dictFromJSONString:nil]);
+}
+
+// Weather-reporter
+
+-(void) checkWeatherAtLocation:(CLLocation*) thisLocation expectTimezone:(NSString*) timeZone
+{
+  XCTAssertNotNil(thisLocation);
+  NSDictionary* result = [WeatherReport getWeatherSummaryForLocation:thisLocation];
+  XCTAssertNotNil(result);
+  NSString* location = [result objectForKey:@"location"];
+  NSString* summary = [result objectForKey:@"summary"];
+  XCTAssertNotNil(location);
+  XCTAssertEqualObjects(location, timeZone);
+  XCTAssertNotNil(summary);
+  XCTAssertGreaterThan(summary.length, 0);
+}
+
+-(void) testWeatherReportHeadless
+{
+  NSDictionary* locs =
+  @{@"sydney":[[CLLocation alloc] initWithLatitude:-31 longitude:151],
+    @"canberra":[[CLLocation alloc] initWithLatitude:-35.3075 longitude:149.124417],
+    @"darwin":[[CLLocation alloc] initWithLatitude:-12.45 longitude:130.833333],
+    @"perth":[[CLLocation alloc] initWithLatitude:-31.952222 longitude:115.858889],
+    @"center":[[CLLocation alloc] initWithLatitude:0 longitude:0]};
+
+  [self checkWeatherAtLocation:[locs objectForKey:@"sydney"] expectTimezone:@"Australia/Sydney"];
+  [self checkWeatherAtLocation:[locs objectForKey:@"canberra"] expectTimezone:@"Australia/Sydney"];
+  [self checkWeatherAtLocation:[locs objectForKey:@"darwin"] expectTimezone:@"Australia/Darwin"];
+  [self checkWeatherAtLocation:[locs objectForKey:@"perth"] expectTimezone:@"Australia/Perth"];
+  [self checkWeatherAtLocation:[locs objectForKey:@"center"] expectTimezone:@"Etc/GMT"];
+
+  XCTAssertNil([WeatherReport getWeatherSummaryForLocation:[[CLLocation alloc] initWithLatitude:999 longitude:999]]);
+  XCTAssertNil([WeatherReport getWeatherSummaryForLocation:nil]);
 }
 
 @end

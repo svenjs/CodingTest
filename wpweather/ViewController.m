@@ -7,6 +7,8 @@
 //
 
 #import "ViewController.h"
+#import "WeatherReport.h"
+#import "Util.h"
 
 @interface ViewController ()
 
@@ -52,6 +54,33 @@
   NSDateFormatter *dateFormatter = [[NSDateFormatter alloc]init];
   [dateFormatter setDateFormat:@"dd.MM.YY HH:mm:ss"];
   self.lblLastTimeChecked.text = [dateFormatter stringFromDate:currDate];
+}
+
+- (void) retrieveAndPopulateForLocation:(CLLocation*) myLocation
+                               onFinish:(void (^)()) returnBlock
+{
+  [self startWaiting];
+
+  __block NSString* location;
+  __block NSString* summary;
+
+  [Util runInBG:^()
+  {
+    NSDictionary* result = [WeatherReport getWeatherSummaryForLocation:myLocation];
+    if (result && [result respondsToSelector:@selector(objectForKey:)])
+    {
+      location = [result objectForKey:@"location"];
+      summary = [result objectForKey:@"summary"];
+    }
+  } thenRunInFG:^()
+  {
+    if (location && summary)
+    {
+      [self stopWaitingWithSummary:summary andlocation:location];
+      if (returnBlock)
+        returnBlock();
+    }
+  }];
 }
 
 @end

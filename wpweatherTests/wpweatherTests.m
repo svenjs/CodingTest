@@ -160,6 +160,18 @@
   XCTAssertGreaterThan(summary.length, 0);
 }
 
+- (CLLocation*) testLocationWithName:(NSString*) name
+{
+  NSDictionary* locs =
+  @{@"sydney":[[CLLocation alloc] initWithLatitude:-31 longitude:151],
+    @"canberra":[[CLLocation alloc] initWithLatitude:-35.3075 longitude:149.124417],
+    @"darwin":[[CLLocation alloc] initWithLatitude:-12.45 longitude:130.833333],
+    @"perth":[[CLLocation alloc] initWithLatitude:-31.952222 longitude:115.858889],
+    @"center":[[CLLocation alloc] initWithLatitude:0 longitude:0]};
+
+  return [locs objectForKey:name];
+}
+
 -(void) testWeatherReportHeadless
 {
   NSDictionary* locs =
@@ -177,6 +189,52 @@
 
   XCTAssertNil([WeatherReport getWeatherSummaryForLocation:[[CLLocation alloc] initWithLatitude:999 longitude:999]]);
   XCTAssertNil([WeatherReport getWeatherSummaryForLocation:nil]);
+}
+
+- (void) checkWeatherReportInVCWithLocationAndExpectedTimezone:(NSArray*) locAndTimezone
+{
+  XCTAssertGreaterThanOrEqual(locAndTimezone.count, 2, @"Expecting two fields: Location and expected timezone");
+
+  NSString* location = [locAndTimezone objectAtIndex:0];
+  NSString* expectedTimezone = [locAndTimezone objectAtIndex:1];
+
+  XCTestExpectation *expectation = [self expectationWithDescription:@"Return of weather-lookup"];
+
+  [self.vc retrieveAndPopulateForLocation:[self testLocationWithName:location] onFinish:^()
+   {
+     XCTAssertFalse(self.vc.aivSpinner.isAnimating);
+     XCTAssertTrue(self.vc.btnRefresh.enabled);
+     XCTAssertGreaterThan(self.vc.lblWeatherSummary.text.length, 0);
+     XCTAssertEqualObjects(self.vc.lblLocation.text, expectedTimezone);
+
+     // test if last-checked contains a valid date string
+     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc]init];
+     [dateFormatter setDateFormat:@"dd.MM.YY HH:mm:ss"];
+     NSDate* lastTimeCheckDate = [dateFormatter dateFromString:self.vc.lblLastTimeChecked.text];
+     XCTAssertNotNil(lastTimeCheckDate);
+
+     // should be in the past and a valid date
+     XCTAssertTrue([Util isThisDateBeforeNow:lastTimeCheckDate]);
+
+     [expectation fulfill];
+   }];
+
+  [self waitForExpectationsWithTimeout:10.0 handler:^(NSError *error)
+  {
+    if (error)
+    {
+      NSLog(@"Timeout Error: %@", error);
+    }
+  }];
+}
+
+- (void) testWeatherReportInVC
+{
+  [self checkWeatherReportInVCWithLocationAndExpectedTimezone:@[@"sydney",@"Australia/Sydney"]];
+  [self checkWeatherReportInVCWithLocationAndExpectedTimezone:@[@"canberra",@"Australia/Sydney"]];
+  [self checkWeatherReportInVCWithLocationAndExpectedTimezone:@[@"perth",@"Australia/Perth"]];
+  [self checkWeatherReportInVCWithLocationAndExpectedTimezone:@[@"darwin",@"Australia/Darwin"]];
+  [self checkWeatherReportInVCWithLocationAndExpectedTimezone:@[@"center",@"Etc/GMT"]];
 }
 
 @end

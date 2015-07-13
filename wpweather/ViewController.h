@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "CoreLocation/CoreLocation.h"
 
 @interface ViewController : UIViewController
 
@@ -19,6 +20,8 @@
 - (void) startWaiting;
 - (void) stopWaitingWithSummary:(NSString*) summaryString
                     andlocation:(NSString*) locationString;
+- (void) retrieveAndPopulateForLocation:(CLLocation*) myLocation
+                               onFinish:(void (^)()) returnBlock;
 
 @end
 

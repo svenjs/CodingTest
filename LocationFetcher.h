@@ -22,4 +22,6 @@ typedef void (^ErrorBlock) (NSError* error);
                andFailBlock:(ErrorBlock) failureBlock;
 - (void) startLookup;
 
++ (BOOL) isGPSRestrictedOrDenied;
+
 @end

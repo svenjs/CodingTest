@@ -33,6 +33,12 @@
   return self;
 }
 
++ (BOOL) isGPSRestrictedOrDenied
+{
+  CLAuthorizationStatus status = [CLLocationManager authorizationStatus];
+  return status == kCLAuthorizationStatusRestricted || status == kCLAuthorizationStatusDenied;
+}
+
 - (void) startLookup
 {
   if (self.testOverrideError || self.testOverrideLocation)

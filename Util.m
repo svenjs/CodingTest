@@ -95,4 +95,22 @@
   });
 }
 
++(void) showMessage:(NSString*) msg withTitle:(NSString*) title
+{
+  UIAlertView *alert = [[UIAlertView alloc] initWithTitle:title
+                                                  message:msg
+                                                 delegate:nil
+                                        cancelButtonTitle:@"Ok" otherButtonTitles:nil];
+  [alert show];
+}
+
++(void) showMessage:(NSString*) msg
+{
+  UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Notification"
+                                                  message:msg
+                                                 delegate:nil
+                                        cancelButtonTitle:@"Ok" otherButtonTitles:nil];
+  [alert show];
+}
+
 @end

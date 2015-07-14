@@ -7,6 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import <UIKit/UIKit.h>
 
 @interface Util : NSObject
 
@@ -16,4 +17,6 @@
 + (NSDictionary*) dictFromJSONString:(NSString*) jsonString;
 + (void) runInBG:(void (^)()) bgBlock
      thenRunInFG:(void (^)()) fgBlock;
++(void) showMessage:(NSString*) msg withTitle:(NSString*) title;
++(void) showMessage:(NSString*) msg;
 @end

@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import "CoreLocation/CoreLocation.h"
+#import "LocationFetcher.h"
 
 @interface ViewController : UIViewController
 
@@ -22,6 +23,8 @@
                     andlocation:(NSString*) locationString;
 - (void) retrieveAndPopulateForLocation:(CLLocation*) myLocation
                                onFinish:(void (^)()) returnBlock;
+- (void) retrieveAndPopulateForCurrentLocationWithReturnBlock:(void (^)()) finishBlock
+                                                 andInitBlock:(void (^) (LocationFetcher* lf)) initBlock;
 
 @end
 

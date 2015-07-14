@@ -294,4 +294,79 @@
   [self checkLocationFetcherWithTestLocationNamed:@"center" andError:[NSError errorWithDomain:@"Test" code:200 userInfo:nil]];
 }
 
+- (void) testLocationAndWeatherReportInVC
+{
+  XCTestExpectation *expectation = [self expectationWithDescription:@"Return of location- and data-retrieval"];
+
+  [self.vc retrieveAndPopulateForCurrentLocationWithReturnBlock:^()
+  {
+    XCTAssertFalse(self.vc.aivSpinner.isAnimating);
+    XCTAssertTrue(self.vc.btnRefresh.enabled);
+    XCTAssertNotNil(self.vc.lblWeatherSummary.text);
+    XCTAssertGreaterThanOrEqual(self.vc.lblWeatherSummary.text.length, 0);
+    XCTAssertEqualObjects(self.vc.lblLocation.text, @"Australia/Sydney");
+
+    // test if last-checked contains a valid date string
+    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc]init];
+    [dateFormatter setDateFormat:@"dd.MM.YY HH:mm:ss"];
+    NSDate* lastTimeCheckDate = [dateFormatter dateFromString:self.vc.lblLastTimeChecked.text];
+    XCTAssertNotNil(lastTimeCheckDate);
+
+    // should be in the past and a valid date
+    XCTAssertTrue([Util isThisDateBeforeNow:lastTimeCheckDate]);
+
+    [expectation fulfill];
+  } andInitBlock:^(LocationFetcher* ourFetcher)
+  {
+    ourFetcher.testOverrideLocation = [self testLocationWithName:@"sydney"];
+    ourFetcher.testLookupDelay = 0;
+  }];
+
+  [self waitForExpectationsWithTimeout:20.0 handler:^(NSError *error)
+  {
+    if (error)
+    {
+      NSLog(@"Timeout Error: %@", error);
+    }
+  }];
+}
+
+- (void) testLocationAndWeatherReportErrorInVC
+{
+  XCTestExpectation *expectation = [self expectationWithDescription:@"Return of location- and data-retrieval"];
+
+  [self.vc retrieveAndPopulateForCurrentLocationWithReturnBlock:^()
+   {
+     XCTAssertFalse(self.vc.aivSpinner.isAnimating);
+     XCTAssertTrue(self.vc.btnRefresh.enabled);
+     XCTAssertNotNil(self.vc.lblWeatherSummary.text);
+     XCTAssertGreaterThanOrEqual(self.vc.lblWeatherSummary.text.length, 0);
+     XCTAssertEqualObjects(self.vc.lblLocation.text, @"Error");
+
+     // test if last-checked contains a valid date string
+     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc]init];
+     [dateFormatter setDateFormat:@"dd.MM.YY HH:mm:ss"];
+     NSDate* lastTimeCheckDate = [dateFormatter dateFromString:self.vc.lblLastTimeChecked.text];
+     XCTAssertNotNil(lastTimeCheckDate);
+
+     // should be in the past and a valid date
+     XCTAssertTrue([Util isThisDateBeforeNow:lastTimeCheckDate]);
+
+     [expectation fulfill];
+   } andInitBlock:^(LocationFetcher* ourFetcher)
+   {
+     ourFetcher.testOverrideLocation = [self testLocationWithName:@"invalid"];
+     ourFetcher.testLookupDelay = 0;
+   }];
+
+  [self waitForExpectationsWithTimeout:20.0 handler:^(NSError *error)
+   {
+     if (error)
+     {
+       NSLog(@"Timeout Error: %@", error);
+     }
+   }];
+}
+
+
 @end

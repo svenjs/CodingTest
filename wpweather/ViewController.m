@@ -9,6 +9,7 @@
 #import "ViewController.h"
 #import "WeatherReport.h"
 #import "Util.h"
+#import "LocationFetcher.h"
 
 @interface ViewController ()
 
@@ -61,7 +62,7 @@
 - (void) retrieveAndPopulateForLocation:(CLLocation*) myLocation
                                onFinish:(void (^)()) returnBlock
 {
-  [self startWaiting];
+  [self startWaiting]; // idempotent, so can be run again
 
   __block NSString* location = @"Error";
   __block NSString* summary = @"Error";
@@ -84,6 +85,47 @@
     if (returnBlock)
       returnBlock();
   }];
+}
+
+- (void) retrieveAndPopulateForCurrentLocationWithReturnBlock:(void (^)()) finishBlock
+                                                 andInitBlock:(void (^) (LocationFetcher* lf)) initBlock
+{
+  [self startWaiting];
+
+  LocationFetcher* lf = [[LocationFetcher alloc] initWithSuccessBlock:^(CLLocation* myLocation)
+  {
+    NSLog(@"GOT LOCATION: %@", myLocation);
+    [self retrieveAndPopulateForLocation:myLocation onFinish:finishBlock];
+  } andFailBlock:^(NSError* error)
+  {
+    NSLog(@"FAILED TO GET LOCATION WITH ERROR: %@", error);
+    NSString* message = @"Failed to Get Your Location";
+
+    CLAuthorizationStatus status = [CLLocationManager authorizationStatus];
+
+    if (status == kCLAuthorizationStatusRestricted || status == kCLAuthorizationStatusDenied)
+    {
+      message = @"Please enable location services for this app";
+    }
+
+    [self stopWaitingWithSummary:@"Error" andlocation:@"Error"];
+
+    UIAlertView *errorAlert = [[UIAlertView alloc]
+                               initWithTitle:@"Error" message:message delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+    [errorAlert show];
+
+    if (finishBlock)
+    {
+      finishBlock();
+    }
+  }];
+
+  if (initBlock)
+  {
+    initBlock(lf);
+  }
+
+  [lf startLookup];
 }
 
 @end

@@ -368,5 +368,51 @@
    }];
 }
 
+- (BOOL) checkVCHasFinishedWithLocation:(NSString*) locationString
+{
+  XCTAssertFalse(self.vc.aivSpinner.isAnimating);
+  XCTAssertTrue(self.vc.btnRefresh.enabled);
+  XCTAssertNotNil(self.vc.lblWeatherSummary.text);
+  XCTAssertGreaterThanOrEqual(self.vc.lblWeatherSummary.text.length, 0);
+  XCTAssertEqualObjects(self.vc.lblLocation.text, locationString);
+
+  // test if last-checked contains a valid date string
+  NSDateFormatter *dateFormatter = [[NSDateFormatter alloc]init];
+  [dateFormatter setDateFormat:@"dd.MM.YY HH:mm:ss"];
+  NSDate* lastTimeCheckDate = [dateFormatter dateFromString:self.vc.lblLastTimeChecked.text];
+  XCTAssertNotNil(lastTimeCheckDate);
+
+  // should be in the past and a valid date
+  XCTAssertTrue([Util isThisDateBeforeNow:lastTimeCheckDate]);
+}
+
+- (void) testLocationAndWeatherReportInVCWithBlocks
+{
+  XCTestExpectation *expectation = [self expectationWithDescription:@"Return of location- and data-retrieval"];
+
+  self.vc.blkFinishedLoadingWeather = ^()
+   {
+     [self checkVCHasFinishedWithLocation:@"Australia/Sydney"];
+     [expectation fulfill];
+   };
+
+  CLLocation* sydneyLocation = [self testLocationWithName:@"sydney"];
+
+  self.vc.blkInitLocationFetcher = ^(LocationFetcher* ourFetcher)
+  {
+    ourFetcher.testOverrideLocation = sydneyLocation;
+    ourFetcher.testLookupDelay = 0;
+  };
+
+  [self.vc retrieveAndPopulateForCurrentLocation];
+
+  [self waitForExpectationsWithTimeout:20.0 handler:^(NSError *error)
+   {
+     if (error)
+     {
+       NSLog(@"Timeout Error: %@", error);
+     }
+   }];
+}
 
 @end

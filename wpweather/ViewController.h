@@ -18,6 +18,13 @@
 @property (nonatomic, assign) IBOutlet UIActivityIndicatorView *aivSpinner;
 @property (nonatomic, assign) IBOutlet UIButton *btnRefresh;
 
+// for testing
+
+@property (copy) void (^blkInitLocationFetcher) (LocationFetcher* lf);
+@property (copy) void (^blkFinishedLoadingWeather) (void);
+
+// methods
+
 - (void) startWaiting;
 - (void) stopWaitingWithSummary:(NSString*) summaryString
                     andlocation:(NSString*) locationString;
@@ -25,6 +32,6 @@
                                onFinish:(void (^)()) returnBlock;
 - (void) retrieveAndPopulateForCurrentLocationWithReturnBlock:(void (^)()) finishBlock
                                                  andInitBlock:(void (^) (LocationFetcher* lf)) initBlock;
-
+- (void) retrieveAndPopulateForCurrentLocation;
 @end
 

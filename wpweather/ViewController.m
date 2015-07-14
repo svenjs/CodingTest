@@ -87,6 +87,12 @@
   }];
 }
 
+- (void) retrieveAndPopulateForCurrentLocation
+{
+  [self retrieveAndPopulateForCurrentLocationWithReturnBlock:self.blkFinishedLoadingWeather
+                                                andInitBlock:self.blkInitLocationFetcher];
+}
+
 - (void) retrieveAndPopulateForCurrentLocationWithReturnBlock:(void (^)()) finishBlock
                                                  andInitBlock:(void (^) (LocationFetcher* lf)) initBlock
 {

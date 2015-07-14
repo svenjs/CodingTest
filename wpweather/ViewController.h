@@ -35,5 +35,8 @@
 - (void) retrieveAndPopulateForCurrentLocationWithReturnBlock:(void (^)()) finishBlock
                                                  andInitBlock:(void (^) (LocationFetcher* lf)) initBlock;
 - (void) retrieveAndPopulateForCurrentLocation;
+
+- (IBAction)refreshButtonPressed:(id)sender;
+
 @end
 

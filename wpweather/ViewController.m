@@ -32,6 +32,11 @@
                                              object:nil];
 }
 
+- (IBAction)refreshButtonPressed:(id)sender
+{
+  [self retrieveAndPopulateForCurrentLocation];
+}
+
 - (void) didReceiveMemoryWarning
 {
   [super didReceiveMemoryWarning];

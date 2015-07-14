@@ -104,22 +104,15 @@
     [self retrieveAndPopulateForLocation:myLocation onFinish:finishBlock];
   } andFailBlock:^(NSError* error)
   {
-    NSLog(@"FAILED TO GET LOCATION WITH ERROR: %@", error);
-    NSString* message = @"Failed to Get Your Location";
-
-    CLAuthorizationStatus status = [CLLocationManager authorizationStatus];
-
-    if (status == kCLAuthorizationStatusRestricted || status == kCLAuthorizationStatusDenied)
-    {
-      message = @"Please enable location services for this app";
-    }
-
+    NSLog(@"FAILED TO GET LOCATION WITH ERROR: %@", [error localizedDescription]);
+    
     [self stopWaitingWithSummary:@"Error" andlocation:@"Error"];
-
-    UIAlertView *errorAlert = [[UIAlertView alloc]
-                               initWithTitle:@"Error" message:message delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
-    [errorAlert show];
-
+    
+    if ([LocationFetcher isGPSRestrictedOrDenied])
+    {
+      [Util showMessage:@"Please enable location services for this app"];
+    }
+    
     if (finishBlock)
     {
       finishBlock();

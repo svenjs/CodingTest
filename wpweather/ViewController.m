@@ -16,11 +16,20 @@
 @end
 
 @implementation ViewController
+{
+  BOOL isWeatherQueryRunning;
+}
 
 - (void) viewDidLoad
 {
   [super viewDidLoad];
   // Do any additional setup after loading the view, typically from a nib.
+  isWeatherQueryRunning = NO;
+  [self retrieveAndPopulateForCurrentLocation];
+  [[NSNotificationCenter defaultCenter] addObserver:self
+                                           selector:@selector(retrieveAndPopulateForCurrentLocation)
+                                               name:UIApplicationWillEnterForegroundNotification
+                                             object:nil];
 }
 
 - (void) didReceiveMemoryWarning
@@ -31,6 +40,8 @@
 
 - (void) startWaiting
 {
+  // flag
+  isWeatherQueryRunning = YES;
   // button and spinner
   self.btnRefresh.enabled = NO;
   self.aivSpinner.hidden = NO;
@@ -45,6 +56,8 @@
 - (void) stopWaitingWithSummary:(NSString*) summaryString
                     andlocation:(NSString*) locationString
 {
+  // flag
+  isWeatherQueryRunning = NO;
   // button and spinner
   self.btnRefresh.enabled = YES;
   self.aivSpinner.hidden = YES;
@@ -96,6 +109,11 @@
 - (void) retrieveAndPopulateForCurrentLocationWithReturnBlock:(void (^)()) finishBlock
                                                  andInitBlock:(void (^) (LocationFetcher* lf)) initBlock
 {
+  if (isWeatherQueryRunning)
+  {
+    [Util showMessage:@"Query in process"];
+    return;
+  }
   [self startWaiting];
 
   self.lf = [[LocationFetcher alloc] initWithSuccessBlock:^(CLLocation* myLocation)

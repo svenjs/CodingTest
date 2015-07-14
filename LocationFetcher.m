@@ -8,6 +8,7 @@
 
 #import "LocationFetcher.h"
 #import "Util.h"
+#include "TargetConditionals.h"
 
 @implementation LocationFetcher
 {
@@ -41,7 +42,7 @@
 
 - (void) startLookup
 {
-  if (self.testOverrideError || self.testOverrideLocation)
+  if (self.testOverrideError || self.testOverrideLocation || TARGET_IPHONE_SIMULATOR)
   {
     [Util runInBG:^()
      {
@@ -52,9 +53,15 @@
        {
          _failureBlock(self.testOverrideError);
        }
-       else
+       else if (self.testOverrideLocation)
        {
          _successBlock(self.testOverrideLocation);
+       }
+       else
+       {
+         // We're on the simulator and no test-data is given
+         // default to Sydney's coordinates
+         _successBlock([[CLLocation alloc] initWithLatitude:-31 longitude:151]);
        }
      }];
   }

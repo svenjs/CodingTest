@@ -18,6 +18,8 @@
 @property (nonatomic, assign) IBOutlet UIActivityIndicatorView *aivSpinner;
 @property (nonatomic, assign) IBOutlet UIButton *btnRefresh;
 
+@property (nonatomic, strong) LocationFetcher* lf;
+
 // for testing
 
 @property (copy) void (^blkInitLocationFetcher) (LocationFetcher* lf);

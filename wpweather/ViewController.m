@@ -98,7 +98,7 @@
 {
   [self startWaiting];
 
-  LocationFetcher* lf = [[LocationFetcher alloc] initWithSuccessBlock:^(CLLocation* myLocation)
+  self.lf = [[LocationFetcher alloc] initWithSuccessBlock:^(CLLocation* myLocation)
   {
     NSLog(@"GOT LOCATION: %@", myLocation);
     [self retrieveAndPopulateForLocation:myLocation onFinish:finishBlock];
@@ -128,10 +128,10 @@
 
   if (initBlock)
   {
-    initBlock(lf);
+    initBlock(self.lf);
   }
 
-  [lf startLookup];
+  [self.lf startLookup];
 }
 
 @end

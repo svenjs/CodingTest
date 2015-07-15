@@ -186,6 +186,7 @@
 				TargetAttributes = {
 					921708281B535BAB0007406D = {
 						CreatedOnToolsVersion = 6.4;
+						DevelopmentTeam = UWPRBTZNXW;
 					};
 					921708411B535BAC0007406D = {
 						CreatedOnToolsVersion = 6.4;
@@ -371,9 +372,12 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Distribution: Sven-Jesko Strala (UWPRBTZNXW)";
 				INFOPLIST_FILE = wpweather/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "4a6f9ed5-6a79-4f20-8f94-fad62fd777f2";
 			};
 			name = Debug;
 		};
@@ -381,9 +385,12 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Distribution: Sven-Jesko Strala (UWPRBTZNXW)";
 				INFOPLIST_FILE = wpweather/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "4a6f9ed5-6a79-4f20-8f94-fad62fd777f2";
 			};
 			name = Release;
 		};
@@ -440,6 +447,7 @@
 				9217084E1B535BAC0007406D /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		9217084F1B535BAC0007406D /* Build configuration list for PBXNativeTarget "wpweatherTests" */ = {
 			isa = XCConfigurationList;
@@ -448,6 +456,7 @@
 				921708511B535BAC0007406D /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

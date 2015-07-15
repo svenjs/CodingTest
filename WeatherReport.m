@@ -9,7 +9,8 @@
 #import "WeatherReport.h"
 #import "Util.h"
 
-#define apiKey @"220d2283e1ce1e0cfa550555557b52fd"
+#warning @"API KEY IS MISSING ; PUT API KEY HERE AND COMMENT OUT WARNING"
+#define apiKey @""
 
 @implementation WeatherReport
 
